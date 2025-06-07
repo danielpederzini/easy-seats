@@ -24,8 +24,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
@@ -53,7 +53,7 @@ class AuthServiceTest {
         boolean isAuthenticated = authService.isAuthenticated(refreshToken);
 
         // Assert
-        assertThat(isAuthenticated).isTrue();
+        assertTrue(isAuthenticated);
         verify(jwtUtils).isJwtValid(refreshToken);
         verify(userRepository).findByRefreshToken(refreshToken);
     }
@@ -68,7 +68,7 @@ class AuthServiceTest {
         boolean isAuthenticated = authService.isAuthenticated(refreshToken);
 
         // Assert
-        assertThat(isAuthenticated).isFalse();
+        assertFalse(isAuthenticated);
         verify(jwtUtils).isJwtValid(refreshToken);
     }
 
@@ -83,7 +83,7 @@ class AuthServiceTest {
         boolean isAuthenticated = authService.isAuthenticated(refreshToken);
 
         // Assert
-        assertThat(isAuthenticated).isFalse();
+        assertFalse(isAuthenticated);
         verify(jwtUtils).isJwtValid(refreshToken);
         verify(userRepository).findByRefreshToken(refreshToken);
     }
@@ -102,7 +102,7 @@ class AuthServiceTest {
         String actual = authService.authForWebsocket(userId, clientId);
 
         // Assert
-        assertThat(actual).isEqualTo(expected);
+        assertEquals(expected, actual);
         verify(userRepository).findById(userId);
         verify(jwtUtils).generateWebsocketToken(any(User.class), eq(clientId));
     }
@@ -140,12 +140,12 @@ class AuthServiceTest {
         AuthTokensDto authTokens = authService.signup(request);
 
         // Assert
-        assertThat(authTokens).isNotNull();
-        assertThat(authTokens.getUserId()).isEqualTo(1L);
-        assertThat(authTokens.getAccessToken()).isEqualTo("access-token");
-        assertThat(authTokens.getRefreshToken()).isEqualTo("refresh-token");
-        assertThat(authTokens.getAccessTokenExpirationMs()).isEqualTo(300_000);
-        assertThat(authTokens.getRefreshTokenExpirationMs()).isEqualTo(86_400_000);
+        assertNotNull(authTokens);
+        assertEquals(1L, authTokens.getUserId());
+        assertEquals("access-token", authTokens.getAccessToken());
+        assertEquals("refresh-token", authTokens.getRefreshToken());
+        assertEquals(300_000, authTokens.getAccessTokenExpirationMs());
+        assertEquals(86_400_000, authTokens.getRefreshTokenExpirationMs());
 
         verify(jwtUtils).generateAccessToken(any(User.class));
         verify(jwtUtils).generateRefreshToken(any(User.class));
@@ -186,12 +186,12 @@ class AuthServiceTest {
         AuthTokensDto authTokens = authService.login(request);
 
         // Assert
-        assertThat(authTokens).isNotNull();
-        assertThat(authTokens.getUserId()).isEqualTo(1L);
-        assertThat(authTokens.getAccessToken()).isEqualTo("access-token");
-        assertThat(authTokens.getRefreshToken()).isEqualTo("refresh-token");
-        assertThat(authTokens.getAccessTokenExpirationMs()).isEqualTo(300_000);
-        assertThat(authTokens.getRefreshTokenExpirationMs()).isEqualTo(86_400_000);
+        assertNotNull(authTokens);
+        assertEquals(1L, authTokens.getUserId());
+        assertEquals("access-token", authTokens.getAccessToken());
+        assertEquals("refresh-token", authTokens.getRefreshToken());
+        assertEquals(300_000, authTokens.getAccessTokenExpirationMs());
+        assertEquals(86_400_000, authTokens.getRefreshTokenExpirationMs());
 
         verify(authManager).authenticate(any(Authentication.class));
         verify(userRepository).findByEmail(request.getEmail().toLowerCase());
@@ -232,12 +232,12 @@ class AuthServiceTest {
         AuthTokensDto authTokens = authService.refreshToken(refreshToken);
 
         // Assert
-        assertThat(authTokens).isNotNull();
-        assertThat(authTokens.getUserId()).isEqualTo(1L);
-        assertThat(authTokens.getAccessToken()).isEqualTo("access-token2");
-        assertThat(authTokens.getRefreshToken()).isEqualTo("refresh-token2");
-        assertThat(authTokens.getAccessTokenExpirationMs()).isEqualTo(300_000);
-        assertThat(authTokens.getRefreshTokenExpirationMs()).isEqualTo(86_400_000);
+        assertNotNull(authTokens);
+        assertEquals(1L, authTokens.getUserId());
+        assertEquals("access-token2", authTokens.getAccessToken());
+        assertEquals("refresh-token2", authTokens.getRefreshToken());
+        assertEquals(300_000, authTokens.getAccessTokenExpirationMs());
+        assertEquals(86_400_000, authTokens.getRefreshTokenExpirationMs());
 
         verify(jwtUtils).isJwtValid(refreshToken);
         verify(userRepository).findByRefreshToken(refreshToken);

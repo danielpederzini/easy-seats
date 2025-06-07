@@ -65,7 +65,7 @@ public class DefaultBookingService implements BookingService {
                                                                int page) {
         Pageable pageable = PageRequest.of(page, 15);
 
-        // Default: all but expired
+        // Default: all but expired and awaiting_deletion
         if (statuses == null || statuses.isEmpty()) {
             statuses = List.of(
                     AWAITING_PAYMENT,

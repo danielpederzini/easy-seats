@@ -76,7 +76,7 @@ public class DefaultCreateBookingUseCase implements CreateBookingUseCase {
 
         // Update entity with checkout session info
         booking.setCheckoutId(response.getCheckoutId());
-        booking.setCheckoutUrl(response.getCheckoutURL());
+        booking.setCheckoutUrl(response.getCheckoutUrl());
         booking.setExpiresAt(LocalDateTime.now().plus(EXPIRES_IN_MS, ChronoUnit.MILLIS));
         bookingService.saveBooking(booking);
 

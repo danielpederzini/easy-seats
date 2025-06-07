@@ -66,14 +66,14 @@ public class StripePaymentService implements PaymentService {
         return BookingResponse.builder()
                 .bookingId(booking.getId())
                 .checkoutId(session.getId())
-                .checkoutURL(session.getUrl())
+                .checkoutUrl(session.getUrl())
                 .build();
     }
 
     @Override
-    public String createRefund(Booking booking, Long userId, String paymentIntentId) throws StripeException {
+    public String createRefund(Booking booking, Long userId) throws StripeException {
         RefundCreateParams params = RefundCreateParams.builder()
-                .setPaymentIntent(paymentIntentId)
+                .setPaymentIntent(booking.getPaymentIntentId())
                 .setReason(RefundCreateParams.Reason.REQUESTED_BY_CUSTOMER)
                 .putMetadata(BOOKING_ID_KEY, String.valueOf(booking.getId()))
                 .putMetadata(USER_ID_KEY, String.valueOf(userId))
@@ -94,6 +94,7 @@ public class StripePaymentService implements PaymentService {
 
         paymentInfo.setCheckoutId(session.getId());
         paymentInfo.setCheckoutStatus(
+                session.getStatus() == null ? CheckoutStatus.PENDING :
                 switch (session.getStatus()) {
                     case "complete" -> CheckoutStatus.COMPLETED;
                     case "expired" -> CheckoutStatus.EXPIRED;
@@ -102,7 +103,7 @@ public class StripePaymentService implements PaymentService {
         );
 
         // No payment was even tried
-        if (session.getPaymentIntent() == null) {
+        if (session.getPaymentIntent() == null || !paymentInfo.getCheckoutStatus().equals(CheckoutStatus.COMPLETED)) {
             paymentInfo.setPaymentStatus(PaymentStatus.PENDING);
             return paymentInfo;
         }
@@ -111,6 +112,7 @@ public class StripePaymentService implements PaymentService {
 
         paymentInfo.setPaymentIntentId(paymentIntent.getId());
         paymentInfo.setPaymentStatus(
+                session.getStatus() == null ? PaymentStatus.PENDING :
                 switch (paymentIntent.getStatus()) {
                     case "succeeded" -> PaymentStatus.SUCCEEDED;
                     case "requires_payment_method", "requires_action" -> PaymentStatus.FAILED;

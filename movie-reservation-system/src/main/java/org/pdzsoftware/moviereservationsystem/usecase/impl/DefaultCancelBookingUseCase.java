@@ -54,7 +54,7 @@ public class DefaultCancelBookingUseCase implements CancelBookingUseCase {
         try {
             log.info("[DefaultCancelBookingUseCase] Creating refund for booking with ID: {} and paymentIntentId: {}",
                     booking.getId(), booking.getPaymentIntentId());
-            return paymentService.createRefund(booking, userId, booking.getPaymentIntentId());
+            return paymentService.createRefund(booking, userId);
         } catch (Exception e) {
             log.error("[DefaultCancelBookingUseCase] Error creating refund for booking with ID: {} and paymentIntentId: {}",
                     booking.getId(), booking.getPaymentIntentId(), e);

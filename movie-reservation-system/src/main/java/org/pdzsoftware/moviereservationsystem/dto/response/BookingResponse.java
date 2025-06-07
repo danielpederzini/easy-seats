@@ -10,5 +10,5 @@ import lombok.*;
 public class BookingResponse {
     private Long bookingId;
     private String checkoutId;
-    private String checkoutURL;
+    private String checkoutUrl;
 }

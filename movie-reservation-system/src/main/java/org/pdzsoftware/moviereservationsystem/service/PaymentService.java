@@ -12,7 +12,7 @@ public interface PaymentService {
     String USER_ID_KEY = "userId";
 
     BookingResponse createCheckout(User user, Booking booking, String successUrl, String cancelUrl, String movieTitle) throws Exception;
-    String createRefund(Booking booking, Long userId, String paymentIntentId) throws Exception;
+    String createRefund(Booking booking, Long userId) throws Exception;
     PaymentInfoDto getPaymentInfoBySessionId(String sessionId) throws Exception;
     void expireCheckoutSession(String sessionId) throws Exception;
 }

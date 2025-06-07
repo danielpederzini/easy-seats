@@ -6,21 +6,15 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.pdzsoftware.moviereservationsystem.dto.CustomUserDetailsDto;
-import org.pdzsoftware.moviereservationsystem.enums.MovieGenre;
 import org.pdzsoftware.moviereservationsystem.enums.UserRole;
-import org.pdzsoftware.moviereservationsystem.exception.custom.ConflictException;
 import org.pdzsoftware.moviereservationsystem.model.User;
-import org.pdzsoftware.moviereservationsystem.repository.MovieRepository;
 import org.pdzsoftware.moviereservationsystem.repository.UserRepository;
 import org.pdzsoftware.moviereservationsystem.service.impl.DefaultUserService;
-import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 
-import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -28,7 +22,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
-import static org.pdzsoftware.moviereservationsystem.enums.MovieGenre.ACTION;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultUserServiceTest {

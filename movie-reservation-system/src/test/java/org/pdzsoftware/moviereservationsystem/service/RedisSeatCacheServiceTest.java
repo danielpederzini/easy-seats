@@ -33,17 +33,12 @@ class RedisSeatCacheServiceTest {
 
     @Mock
     private RedisTemplate<String, String> template;
+    @Mock
+    private ValueOperations<String, String> valueOps;
+    @Mock
+    private SetOperations<String, String> setOps;
     @InjectMocks
     private RedisSeatCacheService seatCacheService;
-
-    private ValueOperations<String, String> valueOps;
-    private SetOperations<String, String> setOps;
-
-    @BeforeEach
-    void setUp() {
-        valueOps = mock(ValueOperations.class);
-        setOps = mock(SetOperations.class);
-    }
 
     @Test
     void reserve_withSeatAvailable_setsKeyAndAddsToUserLocksKey() {

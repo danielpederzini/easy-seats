@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 public class RedisSeatCacheService implements SeatCacheService {
-    private static final int LOCK_TTL_MS = 5 * 60 * 1000;
+    private static final long LOCK_TTL_MS = 5 * 60 * 1000L;
 
     private static final String USER_LOCKS_KEY_PREFIX = "UserLocks:";
 
@@ -38,6 +38,8 @@ public class RedisSeatCacheService implements SeatCacheService {
 
             String userLocksKey = buildUserLocksKey(userId);
             template.opsForSet().add(userLocksKey, seatKey);
+        } catch (ConflictException ex) {
+            throw ex;
         } catch (Exception ex) {
             log.error("[RedisSeatCacheService] Error reserving seat in Redis", ex);
             throw new InternalErrorException("Internal error reserving seat in cache");
@@ -62,8 +64,9 @@ public class RedisSeatCacheService implements SeatCacheService {
 
             String userLocksKey = buildUserLocksKey(userId);
             template.opsForSet().remove(userLocksKey, key);
+        } catch (ConflictException ex) {
+            throw ex;
         } catch (Exception ex) {
-            if (ex instanceof ConflictException) throw ex;
             log.error("[RedisSeatCacheService] Error releasing seat in Redis", ex);
             throw new InternalErrorException("Internal error releasing seat in cache");
         }

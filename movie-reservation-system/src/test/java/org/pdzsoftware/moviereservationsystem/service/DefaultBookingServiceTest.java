@@ -32,7 +32,7 @@ import static org.pdzsoftware.moviereservationsystem.enums.BookingStatus.*;
 import static org.pdzsoftware.moviereservationsystem.enums.BookingStatus.PAST;
 
 @ExtendWith(MockitoExtension.class)
-class BookingServiceTest {
+class DefaultBookingServiceTest {
     @Mock
     private BookingRepository bookingRepository;
     @InjectMocks
@@ -141,7 +141,7 @@ class BookingServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertIterableEquals(statuses, statusesCaptor.getValue());
+        assertEquals(statuses, statusesCaptor.getValue());
     }
 
     @Test
@@ -157,7 +157,7 @@ class BookingServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertIterableEquals(getValidStatuses(), statusesCaptor.getValue());
+        assertEquals(getValidStatuses(), statusesCaptor.getValue());
     }
 
     @Test
@@ -173,7 +173,7 @@ class BookingServiceTest {
 
         // Assert
         assertNotNull(response);
-        assertIterableEquals(getValidStatuses(), statusesCaptor.getValue());
+        assertEquals(getValidStatuses(), statusesCaptor.getValue());
     }
 
     private static User getMockUser() {

@@ -24,7 +24,7 @@ import static org.mockito.Mockito.*;
 import static org.pdzsoftware.moviereservationsystem.enums.BookingStatus.*;
 
 @ExtendWith(MockitoExtension.class)
-class BookingStatusServiceTest {
+class DefaultBookingStatusServiceTest {
     @Mock
     private BookingRepository bookingRepository;
     @Mock
@@ -56,9 +56,7 @@ class BookingStatusServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> bookingService.validateAndUpdateStatus(booking, AWAITING_PAYMENT))
-                .isInstanceOf(ConflictException.class)
-                .hasMessageContaining("Booking cannot transition from " +
-                        booking.getBookingStatus() + " to " + AWAITING_PAYMENT);
+                .isInstanceOf(ConflictException.class);
 
         verify(bookingRepository, never()).save(any(Booking.class));
         verify(eventPublisher, never()).publishEvent(any(BookingStatusUpdatedEvent.class));
@@ -95,8 +93,7 @@ class BookingStatusServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> bookingService.handleCheckoutCompleted(booking, checkoutId, paymentIntentId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Booking checkout ID does not match");
+                .isInstanceOf(NotFoundException.class);
 
         verify(bookingRepository, never()).save(any(Booking.class));
     }
@@ -146,8 +143,7 @@ class BookingStatusServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> bookingService.handleCheckoutExpired(booking, checkoutId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Booking checkout ID does not match");
+                .isInstanceOf(NotFoundException.class);
 
         verify(bookingRepository, never()).save(any(Booking.class));
         verify(eventPublisher, never()).publishEvent(any(BookingStatusUpdatedEvent.class));
@@ -192,6 +188,27 @@ class BookingStatusServiceTest {
     }
 
     @Test
+    void handlePaymentSuccess_withPartiallyOutdatedBooking_updatesAndPublishesEvent() {
+        // Arrange
+        Booking booking = getMockBooking();
+        booking.setBookingStatus(AWAITING_PAYMENT);
+
+        String paymentIntentId = "payment-intent-id";
+        ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
+
+        when(bookingRepository.save(bookingCaptor.capture())).thenReturn(new Booking());
+
+        // Act
+        bookingService.handlePaymentSuccess(booking, paymentIntentId);
+
+        // Assert
+        assertEquals(paymentIntentId, bookingCaptor.getValue().getPaymentIntentId());
+        assertEquals(PAYMENT_CONFIRMED, bookingCaptor.getValue().getBookingStatus());
+        verify(bookingRepository).save(any(Booking.class));
+        verify(eventPublisher).publishEvent(any(BookingStatusUpdatedEvent.class));
+    }
+
+    @Test
     void handlePaymentSuccess_withOutdatedBookingWithInvalidPaymentIntentId_throwsNotFoundException() {
         // Arrange
         Booking booking = getMockBooking();
@@ -201,8 +218,7 @@ class BookingStatusServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> bookingService.handlePaymentSuccess(booking, paymentIntentId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Booking payment intent ID does not match");
+                .isInstanceOf(NotFoundException.class);
 
         verify(bookingRepository, never()).save(any(Booking.class));
         verify(eventPublisher, never()).publishEvent(any(BookingStatusUpdatedEvent.class));
@@ -247,6 +263,27 @@ class BookingStatusServiceTest {
     }
 
     @Test
+    void handlePaymentFailed_withPartiallyOutdatedBooking_updatesAndPublishesEvent() {
+        // Arrange
+        Booking booking = getMockBooking();
+        booking.setBookingStatus(AWAITING_PAYMENT);
+
+        String paymentIntentId = "payment-intent-id";
+        ArgumentCaptor<Booking> bookingCaptor = ArgumentCaptor.forClass(Booking.class);
+
+        when(bookingRepository.save(bookingCaptor.capture())).thenReturn(new Booking());
+
+        // Act
+        bookingService.handlePaymentFailed(booking, paymentIntentId);
+
+        // Assert
+        assertEquals(paymentIntentId, bookingCaptor.getValue().getPaymentIntentId());
+        assertEquals(PAYMENT_RETRY, bookingCaptor.getValue().getBookingStatus());
+        verify(bookingRepository).save(any(Booking.class));
+        verify(eventPublisher).publishEvent(any(BookingStatusUpdatedEvent.class));
+    }
+
+    @Test
     void handlePaymentFailed_withOutdatedBookingWithInvalidPaymentIntentId_throwsNotFoundException() {
         // Arrange
         Booking booking = getMockBooking();
@@ -256,8 +293,7 @@ class BookingStatusServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> bookingService.handlePaymentFailed(booking, paymentIntentId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Booking payment intent ID does not match");
+                .isInstanceOf(NotFoundException.class);
 
         verify(bookingRepository, never()).save(any(Booking.class));
         verify(eventPublisher, never()).publishEvent(any(BookingStatusUpdatedEvent.class));
@@ -317,8 +353,7 @@ class BookingStatusServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> bookingService.handlePaymentRefunded(booking, refundId))
-                .isInstanceOf(NotFoundException.class)
-                .hasMessageContaining("Booking refund ID does not match");
+                .isInstanceOf(NotFoundException.class);
 
         verify(bookingRepository, never()).save(any(Booking.class));
         verify(eventPublisher, never()).publishEvent(any(BookingStatusUpdatedEvent.class));

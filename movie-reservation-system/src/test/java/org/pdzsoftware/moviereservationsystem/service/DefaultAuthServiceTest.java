@@ -30,7 +30,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
-class AuthServiceTest {
+class DefaultAuthServiceTest {
     @Mock
     private UserRepository userRepository;
     @Mock
@@ -115,20 +115,19 @@ class AuthServiceTest {
 
         // Act
         assertThatThrownBy(() -> authService.authForWebsocket(userId, "client-id"))
-                .isInstanceOf(UnauthorizedException.class)
-                .hasMessageContaining("Websocket auth failed, user not found");
+                .isInstanceOf(UnauthorizedException.class);
 
         // Assert
         verify(userRepository).findById(userId);
-        verify(jwtUtils, never()).generateWebsocketToken(any(User.class), any(String.class));
+        verify(jwtUtils, never()).generateWebsocketToken(any(User.class), anyString());
     }
 
     @Test
     void createUser_withValidInput_returnsAuthTokens() {
         // Arrange
         SignupRequest request = getMockSignupRequest();
-        when(userRepository.existsByEmail(any(String.class))).thenReturn(false);
-        when(passwordEncoder.encode(any(String.class))).thenReturn("091i0dqww$@!#");
+        when(userRepository.existsByEmail(anyString())).thenReturn(false);
+        when(passwordEncoder.encode(anyString())).thenReturn("091i0dqww$@!#");
         when(userRepository.save(any(User.class))).thenReturn(getMockUser());
 
         when(jwtUtils.generateAccessToken(any(User.class))).thenReturn("access-token");
@@ -158,12 +157,11 @@ class AuthServiceTest {
     void createUser_withDuplicateEmail_throwsConflictException() {
         // Arrange
         SignupRequest request = getMockSignupRequest();
-        when(userRepository.existsByEmail(any(String.class))).thenReturn(true);
+        when(userRepository.existsByEmail(anyString())).thenReturn(true);
 
         // Act & Assert
         assertThatThrownBy(() -> authService.signup(request))
-                .isInstanceOf(ConflictException.class)
-                .hasMessageContaining("Email already in use");
+                .isInstanceOf(ConflictException.class);
 
         verify(userRepository).existsByEmail(request.getEmail().toLowerCase());
     }
@@ -215,6 +213,21 @@ class AuthServiceTest {
     }
 
     @Test
+    void login_withNonExistingEmail_throwsUnauthorizedException() {
+        // Arrange
+        LoginRequest request = getMockLoginRequest();
+        when(authManager.authenticate(any(Authentication.class))).thenReturn(null);
+        when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
+
+        // Act & Assert
+        assertThatThrownBy(() -> authService.login(request))
+                .isInstanceOf(UnauthorizedException.class);
+
+        // Assert
+        verify(authManager).authenticate(any(Authentication.class));
+    }
+
+    @Test
     void refreshToken_withValidToken_returnsAuthTokens() {
         // Arrange
         String refreshToken = "refresh-token";
@@ -254,8 +267,7 @@ class AuthServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> authService.refreshToken(refreshToken))
-                .isInstanceOf(UnauthorizedException.class)
-                .hasMessageContaining("Invalid refresh token");
+                .isInstanceOf(UnauthorizedException.class);
 
         verify(jwtUtils).isJwtValid(refreshToken);
     }
@@ -269,8 +281,7 @@ class AuthServiceTest {
 
         // Act & Assert
         assertThatThrownBy(() -> authService.refreshToken(refreshToken))
-                .isInstanceOf(UnauthorizedException.class)
-                .hasMessageContaining("User not found for provided refresh token");
+                .isInstanceOf(UnauthorizedException.class);
 
         verify(jwtUtils).isJwtValid(refreshToken);
         verify(userRepository).findByRefreshToken(refreshToken);

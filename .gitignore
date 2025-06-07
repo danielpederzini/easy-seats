@@ -1,0 +1,59 @@
+# ─── Common ───────────────
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# IDEs / Editors
+.vscode/
+.idea/
+*.iml
+
+# Node/npm/yarn
+package-lock.json
+yarn-error.log
+.pnpm-debug.log
+
+# ─── Frontend: Next.js ────
+# dependencies
+/movie-reservation-frontend/node_modules/
+
+# build output
+/movie-reservation-frontend/.next/
+/movie-reservation-frontend/out/
+/movie-reservation-frontend/dist/
+
+# Next.js environment files
+/movie-reservation-frontend/.env.local
+/movie-reservation-frontend/.env.*.local
+
+# ─── Backend: Spring Boot / Java ────
+# compiled class files
+/movie-reservation-system/target/
+/movie-reservation-system/bin/
+/movie-reservation-system/*.class
+
+# Eclipse/IntelliJ
+/movie-reservation-system/.classpath
+/movie-reservation-system/.project
+/movie-reservation-system/.settings/
+/movie-reservation-system/.idea/
+/movie-reservation-system/*.iml
+
+# Maven wrapper
+/mvnw
+/mvnw.cmd
+/.mvn/
+
+# Spring Boot generated
+/movie-reservation-system/*.jar
+/movie-reservation-system/*.war
+
+# application properties
+/movie-reservation-system/src/main/resources/application.yml
+/movie-reservation-system/src/main/resources/application-*.yml
+
+# ─── Local-Only Git Excludes ────
+/.git/info/exclude

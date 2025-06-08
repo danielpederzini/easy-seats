@@ -236,7 +236,6 @@ class StripePaymentServiceTest {
         String sessionId = "checkout-id";
 
         Session mockSession = getMockSession();
-        mockSession.setPaymentIntent(null);
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             mockedSession.when(() -> Session.retrieve(eq(sessionId)))
@@ -253,6 +252,35 @@ class StripePaymentServiceTest {
             assertEquals(mockSession.getId(), response.getCheckoutId());
             assertEquals(mockSession.getPaymentIntent(), response.getPaymentIntentId());
             assertEquals(CheckoutStatus.PENDING, response.getCheckoutStatus());
+            assertEquals(PaymentStatus.PENDING, response.getPaymentStatus());
+        }
+    }
+
+    @Test
+    @SneakyThrows
+    void getPaymentInfoBySessionId_withExpiredCheckoutWithPaymentIntentId_returnsPaymentInfoDtoWithCorrectInformation() {
+        // Arrange
+        String sessionId = "checkout-id";
+
+        Session mockSession = getMockSession();
+        mockSession.setStatus("expired");
+        // This should never happen as expired sessions don't have payment intent ids
+        mockSession.setPaymentIntent("payment-intent-id");
+
+        try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
+            mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+                    .thenReturn(mockSession);
+
+            // Act
+            PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
+
+            // Assert
+            mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+
+            assertNotNull(response);
+            assertNull(response.getPaymentIntentId());
+            assertEquals(mockSession.getId(), response.getCheckoutId());
+            assertEquals(CheckoutStatus.EXPIRED, response.getCheckoutStatus());
             assertEquals(PaymentStatus.PENDING, response.getPaymentStatus());
         }
     }
@@ -296,6 +324,41 @@ class StripePaymentServiceTest {
 
         PaymentIntent mockPaymentIntent = getMockPaymentIntent();
         mockPaymentIntent.setStatus("unknown");
+
+        try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
+            try (MockedStatic<PaymentIntent> mockedPaymentIntent = mockStatic(PaymentIntent.class)) {
+                mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+                        .thenReturn(mockSession);
+                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(eq(mockSession.getPaymentIntent())))
+                        .thenReturn(mockPaymentIntent);
+
+                // Act
+                PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
+
+                // Assert
+                mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+
+                assertNotNull(response);
+                assertEquals(mockSession.getId(), response.getCheckoutId());
+                assertEquals(mockSession.getPaymentIntent(), response.getPaymentIntentId());
+                assertEquals(mockPaymentIntent.getId(), response.getPaymentIntentId());
+                assertEquals(CheckoutStatus.COMPLETED, response.getCheckoutStatus());
+                assertEquals(PaymentStatus.PENDING, response.getPaymentStatus());
+            }
+        }
+    }
+
+    @Test
+    @SneakyThrows
+    void getPaymentInfoBySessionId_withNullPaymentStatus_returnsPaymentInfoDtoWithCorrectInformation() {
+        // Arrange
+        String sessionId = "checkout-id";
+
+        Session mockSession = getMockSession();
+        mockSession.setStatus("complete");
+        mockSession.setPaymentIntent("payment-intent-id");
+
+        PaymentIntent mockPaymentIntent = getMockPaymentIntent();
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             try (MockedStatic<PaymentIntent> mockedPaymentIntent = mockStatic(PaymentIntent.class)) {

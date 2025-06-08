@@ -112,7 +112,7 @@ public class StripePaymentService implements PaymentService {
 
         paymentInfo.setPaymentIntentId(paymentIntent.getId());
         paymentInfo.setPaymentStatus(
-                session.getStatus() == null ? PaymentStatus.PENDING :
+                paymentIntent.getStatus() == null ? PaymentStatus.PENDING :
                 switch (paymentIntent.getStatus()) {
                     case "succeeded" -> PaymentStatus.SUCCEEDED;
                     case "requires_payment_method", "requires_action" -> PaymentStatus.FAILED;

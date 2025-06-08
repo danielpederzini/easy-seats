@@ -21,7 +21,7 @@ import java.util.Optional;
 @Service
 @RequiredArgsConstructor
 public class DefaultSessionService implements SessionService {
-    private static final Duration TOLERATED_PERIOD = Duration.ofMinutes(20L);
+    public static final Duration TOLERATED_PERIOD = Duration.ofMinutes(20L);
 
     private final SessionRepository sessionRepository;
 
@@ -60,6 +60,16 @@ public class DefaultSessionService implements SessionService {
         return sessionRepository.findResponsesByFilters(movieId, threshold, startOfFirstDay, endOfLastDay, theaterId, pageable);
     }
 
+    @Override
+    public boolean existsById(Long sessionId) {
+        return sessionRepository.existsById(sessionId);
+    }
+
+    @Override
+    public boolean isExpired(LocalDateTime startTime) {
+        return startTime.isBefore(LocalDateTime.now().minus(TOLERATED_PERIOD));
+    }
+
     private static LocalDateTime getEndOfLastDay(LocalDate sessionDate) {
         return sessionDate != null ?
                 sessionDate.plusDays(2).atStartOfDay().minusSeconds(1) :
@@ -70,15 +80,5 @@ public class DefaultSessionService implements SessionService {
         return sessionDate != null ?
                 sessionDate.atStartOfDay() :
                 LocalDate.now().atStartOfDay();
-    }
-
-    @Override
-    public boolean existsById(Long sessionId) {
-        return sessionRepository.existsById(sessionId);
-    }
-
-    @Override
-    public boolean isExpired(LocalDateTime startTime) {
-        return startTime.isBefore(LocalDateTime.now().minus(TOLERATED_PERIOD));
     }
 }

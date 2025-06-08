@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.verify;
@@ -67,14 +67,30 @@ class DefaultUserServiceTest {
     }
 
     @Test
-    void existsById_always_callsRepositoryWithoutAlteringArguments() {
+    void existsById_whenExists_returnsTrue() {
         // Arrange
         Long userId = 1L;
+        when(userService.existsById(any())).thenReturn(true);
 
         // Act
-        userService.existsById(userId);
+        boolean exists = userService.existsById(userId);
 
         // Assert
+        assertTrue(exists);
+        verify(userRepository).existsById(eq(userId));
+    }
+
+    @Test
+    void existsById_whenNotExists_returnsFalse() {
+        // Arrange
+        Long userId = 1L;
+        when(userService.existsById(any())).thenReturn(false);
+
+        // Act
+        boolean exists = userService.existsById(userId);
+
+        // Assert
+        assertFalse(exists);
         verify(userRepository).existsById(eq(userId));
     }
 
@@ -102,7 +118,6 @@ class DefaultUserServiceTest {
     void loadUserByUsername_withNonExistingUser_throwsUsernameNotFoundException() {
         // Arrange
         String email = "test@example.com";
-        User user = getMockUser();
 
         when(userRepository.findByEmail(any())).thenReturn(Optional.empty());
 

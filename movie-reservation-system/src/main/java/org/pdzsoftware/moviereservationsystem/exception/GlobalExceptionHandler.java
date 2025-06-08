@@ -84,7 +84,7 @@ public class GlobalExceptionHandler {
         log.error("[GlobalExceptionHandler] Unexpected error", ex);
         ErrorResponse error = new ErrorResponse(
                 HttpStatus.INTERNAL_SERVER_ERROR,
-                ex.getMessage(),
+                "Something went wrong on the server",
                 request.getRequestURI()
         );
         return ResponseEntity.status(error.getStatus()).body(error);

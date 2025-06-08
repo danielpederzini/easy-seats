@@ -66,6 +66,21 @@ class DefaultMovieServiceTest {
     }
 
     @Test
+    void findResponsesByFilters_withNullGenresList_callsRepositoryAlteringOnlyGenres() {
+        // Arrange
+        String search = "search";
+        int page = 0;
+
+        // Act
+        movieService.findResponsesByFilters(search, null, page);
+
+        // Assert
+        verify(movieRepository).findResponsesByFilters(
+                eq(search), eq(null), any(LocalDateTime.class), any(Pageable.class)
+        );
+    }
+
+    @Test
     void findResponsesByFilters_withGenreList_callsRepositoryWithoutAlteringArguments() {
         // Arrange
         String search = "search";

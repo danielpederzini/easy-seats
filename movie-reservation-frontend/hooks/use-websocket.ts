@@ -24,7 +24,7 @@ function useSeatWebSocket(sessionId: number, ttl: number, onSeatUpdate: (update:
         if (!webSocketToken) return;
 
         const client = new Client({
-          webSocketFactory: () => new SockJS(`http://localhost:8080/ws/seats`),
+          webSocketFactory: () => new SockJS(`http://localhost:8888/ws/seats`),
           connectHeaders: {
             Authorization: `Bearer ${webSocketToken}`,
             movieSessionId: sessionId.toString()

@@ -27,7 +27,7 @@ public class WebhookController {
             @RequestHeader("Stripe-Signature") String sigHeader) {
         try {
             Event event = Webhook.constructEvent(payload, sigHeader, webhookSecret);
-            stripeWebhookService.handleStripeWebhook(event);
+            stripeWebhookService.handleStripeEvent(event);
 
             return ResponseEntity.status(HttpStatus.OK).build();
         } catch (StripeException ex) {

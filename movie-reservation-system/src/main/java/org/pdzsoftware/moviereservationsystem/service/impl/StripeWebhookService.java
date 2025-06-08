@@ -28,7 +28,7 @@ public class StripeWebhookService {
     private final BookingService bookingService;
     private final BookingStatusService bookingStatusService;
 
-    public void handleStripeWebhook(Event event) {
+    public void handleStripeEvent(Event event) {
         String type = event.getType();
 
         log.info("[StripeWebhookService] Received stripe event of type: {}", type);

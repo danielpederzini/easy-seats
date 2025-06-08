@@ -50,7 +50,7 @@ class StripePaymentServiceTest {
 
     @Test
     @SneakyThrows
-    void createCheckout_always_createsCheckoutSessionWithCorrectInformationAndReturnsBookingResponseWith() {
+    void createCheckout_always_createsCheckoutSessionWithCorrectInformationAndReturnsBookingResponse() {
         // Arrange
         User user = getMockUser();
         Booking booking = getMockBooking();

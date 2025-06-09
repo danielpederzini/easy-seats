@@ -1,6 +1,5 @@
 
 ## Overview
-
 **Easy seats** is a easy to use movie ticket reservation system with the following features:
 - User authentication flow with secure cookie-based JWT session handling.
 - Movie listing with search filter and genre filter, with session existence check for smart ordering.
@@ -61,3 +60,8 @@ When payment is confirmed, the user can generate a QRCode to enter the session o
 
 https://github.com/user-attachments/assets/2b091201-5c67-4d23-a571-64401619b985
 
+## Performance Tests
+WIP
+
+## Test Coverage
+WIP

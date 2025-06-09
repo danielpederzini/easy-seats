@@ -113,7 +113,7 @@ export enum BookingStatus {
 export interface BookingResponse {
   bookingId: number;
   checkoutId: string;
-  checkoutURL: string;
+  checkoutUrl: string;
 }
 
 export interface BookingDetailed {

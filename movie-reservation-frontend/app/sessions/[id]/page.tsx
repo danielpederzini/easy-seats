@@ -201,8 +201,10 @@ const SeatSelectionPage: React.FC<SeatSelectionPageProps> = ({
         `http://localhost:3000/bookings/` // Cancel URL
       );
 
-      router.push(bookingResponse.checkoutURL);
+      router.push(bookingResponse.checkoutUrl);
     } catch (err: ApiError | any) {
+      console.log(err)
+
       const status = err.statusCode;
       var description = "Something went wrong. Please try again later.";
 

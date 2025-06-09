@@ -1,3 +1,4 @@
+
 ## Overview
 
 **Easy seats** is a easy to use movie ticket reservation system with the following features:
@@ -19,3 +20,14 @@ There are currently 4 types of JWT in this application:
 - qrCode: short expiration window, custom claims for booking validation
 
 All access and refresh token traffic is done by http-only cookies, to prevent interception and token theft through JavaScript. The refreshToken will always be associated with a field in the user entity, and only one can be present at a time, the value being updated with the new refreshToken whenever a refresh request is made and cleared when a logout request is made.
+
+## Movie Listing
+The movie listing feature uses a smart ordering query to show first the movies that have active sessions, and then the ones that don't, each subgroup ordered alphabetically. It also has optional filters for title (matching %search% in sql) and genre.
+
+https://github.com/user-attachments/assets/c0e00fca-5752-4dca-9836-d3b4ee149845
+
+## Session Listing
+The session listing feature displays sessions for a given movie, always ordered by ascending start time. It does a check to see if there are any seats available for each session, checking both temporary cache locks and persisted booking entities.
+
+https://github.com/user-attachments/assets/b5dd9622-aba0-4a74-8e99-fe0f7b99c8fb
+

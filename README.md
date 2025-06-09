@@ -44,3 +44,14 @@ All seat status changes are broadcasted to the correct session topic, providing 
 https://github.com/user-attachments/assets/b0c20155-203d-47aa-8b33-c1482f5467c4
 
 ## Booking and Payment Integration
+Bookings are entities that link the user to a movie session and the selected seats and aggregate it with payment information. Bookings use a complete range of statuses to keep track of payments, refunds, expirations and so on. Each status also has a list of other statuses to which it can transition to:
+
+- AWAITING_PAYMENT -> PAYMENT_CONFIRMED, PAYMENT_RETRY, EXPIRED
+- PAYMENT_RETRY -> PAYMENT_CONFIRMED, EXPIRED
+- PAYMENT_CONFIRMED -> AWAITING_CANCELLATION, PAST
+- EXPIRED -> AWAITING_CANCELLATION, AWAITING_DELETION
+- AWAITING_CANCELLATION -> CANCELLED
+- PAST -> N/A
+- CANCELLED -> N/A
+- AWAITING_DELETION -> Delete from database
+

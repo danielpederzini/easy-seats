@@ -1,10 +1,21 @@
-# Easy Seats
+## Overview
 
-Easy seats is a easy to use movie ticket reservation system with the following features:
-- User authentication flow with secure JWT-based session handling
-- Movie listing with search filter and genre filter, with session existence check for smart ordering
-- Session listing for the specified movie, with seat availability check to disable the button
-- Seat selection screen with real-time updates, concurrency handling, expiration logic and auto-clear when leaving the page
-- Booking status system fully integrated with Stripe payment API (checkout, expiration, payments, refunds..)
-- User bookings listing, with smart ordering based on status, and buttons for related actions
-- QRCode creation and validation for bookings to be verified when entering the session
+**Easy seats** is a easy to use movie ticket reservation system with the following features:
+- User authentication flow with secure cookie-based JWT session handling.
+- Movie listing with search filter and genre filter, with session existence check for smart ordering.
+- Session listing for the specified movie, with seat availability check to disable the button.
+- Seat selection screen with real-time updates, concurrency handling, expiration logic and auto-clear when leaving the page.
+- Booking status system fully integrated with Stripe payment API (checkout, expiration, payments, refunds..).
+- User bookings listing, with smart ordering based on status, and buttons for related actions.
+- QRCode creation and validation for bookings to be verified when entering the session.
+
+## Tokens and Authentication
+JWT tokens serve as the main security component of this application, all signed and verified with strong private and public keys using RSA algorithm. The tokens contain standard claims like issuer, audience, jti and custom claims such as userId and role. All authenticated operations require a token with the proper role and userId to prevent IDOR attacks.
+
+There are currently 4 types of JWT in this application:
+- accessToken: very short expiration window
+- refreshToken: longer expiration window, invalidated upon use
+- websocketToken: extremely short expiration window, used only to connect to the websocket
+- qrCode: short expiration window, custom claims for booking validation
+
+All access and refresh token traffic is done by http-only cookies, to prevent interception and token theft through JavaScript. The refreshToken will always be associated with a field in the user entity, and only one can be present at a time, the value being updated with the new refreshToken whenever a refresh request is made and cleared when a logout request is made.

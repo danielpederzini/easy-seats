@@ -39,12 +39,12 @@ The seat selection screen displays a matrix of seats arranged by rows and number
 
 Whenever an user enters the seat selection screen, the front-end tries generating a websocketToken containing the userId and the clientId, and then passes it as a Bearer token to subscribe to the session topic. 
 
-All seat status changes are broadcasted to the correct session topic, providing real-time feedback for all users without hurting performance. If the seat selection of an user expires, or if he leaves the screen by any means, a websocket disconnection event will be triggered and the selected seats will be released.
+All seat status changes are broadcasted to the correct session topic (including bookings getting expired/cancelled), providing real-time feedback for all users without hurting performance. If the seat selection of an user expires, or if he leaves the screen by any means, a websocket disconnection event will be triggered and the selected seats will be released.
 
 https://github.com/user-attachments/assets/b0c20155-203d-47aa-8b33-c1482f5467c4
 
 ## Booking and Payment Integration
-Bookings are entities that link the user to a movie session and the selected seats and aggregate it with payment information. Bookings use a complete range of statuses to keep track of payments, refunds, expirations and so on. Each status also has a list of other statuses to which it can transition to:
+Bookings are entities that link the user to a movie session and the selected seats and aggregate it with payment information. Bookings use a complete range of statuses to keep track of payments, refunds, expirations and so on. All payment status changes are sent by Stripe via a webhook endpoint in this application, and processed accordingly. These are the possible booking statuses and to which ones they can transition to:
 
 - AWAITING_PAYMENT -> PAYMENT_CONFIRMED, PAYMENT_RETRY, EXPIRED
 - PAYMENT_RETRY -> PAYMENT_CONFIRMED, EXPIRED
@@ -55,3 +55,6 @@ Bookings are entities that link the user to a movie session and the selected sea
 - CANCELLED -> N/A
 - AWAITING_DELETION -> Delete from database
 
+When the user finishes the seat selection, a booking entity is created with status AWAITING_PAYMENT, and the user is redirected to a Stripe checkout page. If the user leaves the checkout, it's possible to return by going to the "My Bookings" page. The checkout also has an expiration time of 5 minutes (configurable) to prevent users from locking seats that they are not going to pay for. If the checkout expires and payment was not received, the system will check for a payment by actively calling Stripe's API, marking the booking as expired if nothing is found.
+
+When payment is confirmed, the user can generate a QRCode to enter the session or choose to cancel the booking and get refunded. If for some reason a booking was marked as EXPIRED but it actually has an active payment on Stripe, there's a scheduled job that will check for this and either: refund the user if payment is found, or mark the booking for deletion if nothing is found.

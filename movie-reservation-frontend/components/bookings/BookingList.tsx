@@ -130,7 +130,7 @@ const BookingList: React.FC<BookingListProps> = ({
     return (
         <>
             {bookings?.length > 0 ? (
-                <div className="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-6 items-start">
+                <div className="grid grid-cols-1 gap-6 items-start">
                     {bookings.map((booking) => (
                         <BookingCard key={booking.id} booking={booking} cancelBooking={tryCancelBooking} createQrCode={tryCreateQrCode} />
                     ))}

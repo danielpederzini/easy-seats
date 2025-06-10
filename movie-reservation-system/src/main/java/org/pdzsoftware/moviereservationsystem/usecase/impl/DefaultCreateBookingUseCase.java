@@ -28,7 +28,7 @@ import java.util.List;
 @RequiredArgsConstructor
 public class DefaultCreateBookingUseCase implements CreateBookingUseCase {
     private static final String ORIGIN_ID = "default-create-booking-use-case";
-    private static final long EXPIRES_IN_MS = 10 * 60 * 1000L;
+    private static final long EXPIRES_IN_MS = 5 * 60 * 1000L;
 
     private final BookingService bookingService;
     private final UserService userService;

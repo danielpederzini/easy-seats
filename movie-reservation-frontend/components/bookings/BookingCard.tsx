@@ -9,7 +9,6 @@ import { Button } from "@/components/ui/button";
 import { BookingDetailed, BookingStatus, SeatType } from "@/lib/types";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import CountdownTimer from "./CountdownTimer";
-import { string } from "zod";
 
 interface BookingCardProps {
   booking: BookingDetailed;

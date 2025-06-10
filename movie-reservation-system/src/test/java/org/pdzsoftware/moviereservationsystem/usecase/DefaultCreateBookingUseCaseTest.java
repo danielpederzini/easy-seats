@@ -83,20 +83,20 @@ public class DefaultCreateBookingUseCaseTest {
         assertEquals(response.getCheckoutId(), actualResponse.getCheckoutId());
         assertEquals(response.getCheckoutUrl(), actualResponse.getCheckoutUrl());
 
-        verify(userService).findById(eq(userId));
-        verify(sessionService).findById(eq(bookingRequest.getSessionId()));
-        verify(sessionService).isExpired(eq(session.getStartTime()));
-        verify(seatService).findByIds(eq(bookingRequest.getSeatIds()), eq(session.getId()));
-        verify(seatService).areAllAvailableToBook(eq(session.getId()), eq(user.getId()), eq(bookingRequest.getSeatIds()));
-        verify(bookingService).createAndSaveBooking(eq(user), eq(session), eq(seats));
+        verify(userService).findById(userId);
+        verify(sessionService).findById(bookingRequest.getSessionId());
+        verify(sessionService).isExpired(session.getStartTime());
+        verify(seatService).findByIds(bookingRequest.getSeatIds(), session.getId());
+        verify(seatService).areAllAvailableToBook(session.getId(), user.getId(), bookingRequest.getSeatIds());
+        verify(bookingService).createAndSaveBooking(user, session, seats);
         verify(paymentService).createCheckout(
-                eq(user),
-                eq(booking),
-                eq(bookingRequest.getSuccessUrl()),
-                eq(bookingRequest.getCancelUrl()),
-                eq(session.getMovie().getTitle())
+                user,
+                booking,
+                bookingRequest.getSuccessUrl(),
+                bookingRequest.getCancelUrl(),
+                session.getMovie().getTitle()
         );
-        verify(bookingService).saveBooking(eq(booking));
+        verify(bookingService).saveBooking(booking);
         verify(eventPublisher).publishEvent(any(BookingCreatedEvent.class));
     }
 
@@ -113,7 +113,7 @@ public class DefaultCreateBookingUseCaseTest {
         assertThatThrownBy(() -> defaultCreateBooking.execute(userId, bookingRequest))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(userService).findById(eq(userId));
+        verify(userService).findById(userId);
         verify(bookingService, never()).createAndSaveBooking(any(), any(), any());
         verify(bookingService, never()).saveBooking(any());
         verify(paymentService, never()).createCheckout(any(), any(), any(), any(), any());
@@ -134,8 +134,8 @@ public class DefaultCreateBookingUseCaseTest {
         assertThatThrownBy(() -> defaultCreateBooking.execute(userId, bookingRequest))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(userService).findById(eq(userId));
-        verify(sessionService).findById(eq(bookingRequest.getSessionId()));
+        verify(userService).findById(userId);
+        verify(sessionService).findById(bookingRequest.getSessionId());
         verify(bookingService, never()).createAndSaveBooking(any(), any(), any());
         verify(bookingService, never()).saveBooking(any());
         verify(paymentService, never()).createCheckout(any(), any(), any(), any(), any());
@@ -158,9 +158,9 @@ public class DefaultCreateBookingUseCaseTest {
         assertThatThrownBy(() -> defaultCreateBooking.execute(userId, bookingRequest))
                 .isInstanceOf(GoneException.class);
 
-        verify(userService).findById(eq(userId));
-        verify(sessionService).findById(eq(bookingRequest.getSessionId()));
-        verify(sessionService).isExpired(eq(session.getStartTime()));
+        verify(userService).findById(userId);
+        verify(sessionService).findById(bookingRequest.getSessionId());
+        verify(sessionService).isExpired(session.getStartTime());
         verify(bookingService, never()).createAndSaveBooking(any(), any(), any());
         verify(bookingService, never()).saveBooking(any());
         verify(paymentService, never()).createCheckout(any(), any(), any(), any(), any());
@@ -187,10 +187,10 @@ public class DefaultCreateBookingUseCaseTest {
         assertThatThrownBy(() -> defaultCreateBooking.execute(userId, bookingRequest))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(userService).findById(eq(userId));
-        verify(sessionService).findById(eq(bookingRequest.getSessionId()));
-        verify(sessionService).isExpired(eq(session.getStartTime()));
-        verify(seatService).findByIds(eq(bookingRequest.getSeatIds()), eq(session.getId()));
+        verify(userService).findById(userId);
+        verify(sessionService).findById(bookingRequest.getSessionId());
+        verify(sessionService).isExpired(session.getStartTime());
+        verify(seatService).findByIds(bookingRequest.getSeatIds(), session.getId());
         verify(bookingService, never()).createAndSaveBooking(any(), any(), any());
         verify(bookingService, never()).saveBooking(any());
         verify(paymentService, never()).createCheckout(any(), any(), any(), any(), any());
@@ -218,11 +218,11 @@ public class DefaultCreateBookingUseCaseTest {
         assertThatThrownBy(() -> defaultCreateBooking.execute(userId, bookingRequest))
                 .isInstanceOf(ConflictException.class);
 
-        verify(userService).findById(eq(userId));
-        verify(sessionService).findById(eq(bookingRequest.getSessionId()));
-        verify(sessionService).isExpired(eq(session.getStartTime()));
-        verify(seatService).findByIds(eq(bookingRequest.getSeatIds()), eq(session.getId()));
-        verify(seatService).areAllAvailableToBook(eq(session.getId()), eq(user.getId()), eq(bookingRequest.getSeatIds()));
+        verify(userService).findById(userId);
+        verify(sessionService).findById(bookingRequest.getSessionId());
+        verify(sessionService).isExpired(session.getStartTime());
+        verify(seatService).findByIds(bookingRequest.getSeatIds(), session.getId());
+        verify(seatService).areAllAvailableToBook(session.getId(), user.getId(), bookingRequest.getSeatIds());
         verify(bookingService, never()).createAndSaveBooking(any(), any(), any());
         verify(bookingService, never()).saveBooking(any());
         verify(paymentService, never()).createCheckout(any(), any(), any(), any(), any());
@@ -253,18 +253,18 @@ public class DefaultCreateBookingUseCaseTest {
         assertThatThrownBy(() -> defaultCreateBooking.execute(userId, bookingRequest))
                 .isInstanceOf(InternalErrorException.class);
 
-        verify(userService).findById(eq(userId));
-        verify(sessionService).findById(eq(bookingRequest.getSessionId()));
-        verify(sessionService).isExpired(eq(session.getStartTime()));
-        verify(seatService).findByIds(eq(bookingRequest.getSeatIds()), eq(session.getId()));
-        verify(seatService).areAllAvailableToBook(eq(session.getId()), eq(user.getId()), eq(bookingRequest.getSeatIds()));
-        verify(bookingService).createAndSaveBooking(eq(user), eq(session), eq(seats));
+        verify(userService).findById(userId);
+        verify(sessionService).findById(bookingRequest.getSessionId());
+        verify(sessionService).isExpired(session.getStartTime());
+        verify(seatService).findByIds(bookingRequest.getSeatIds(), session.getId());
+        verify(seatService).areAllAvailableToBook(session.getId(), user.getId(), bookingRequest.getSeatIds());
+        verify(bookingService).createAndSaveBooking(user, session, seats);
         verify(paymentService).createCheckout(
-                eq(user),
-                eq(booking),
-                eq(bookingRequest.getSuccessUrl()),
-                eq(bookingRequest.getCancelUrl()),
-                eq(session.getMovie().getTitle())
+                user,
+                booking,
+                bookingRequest.getSuccessUrl(),
+                bookingRequest.getCancelUrl(),
+                session.getMovie().getTitle()
         );
         verify(eventPublisher, never()).publishEvent(any(BookingCreatedEvent.class));
     }

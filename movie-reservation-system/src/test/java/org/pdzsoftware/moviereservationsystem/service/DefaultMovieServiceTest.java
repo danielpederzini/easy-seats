@@ -34,7 +34,7 @@ class DefaultMovieServiceTest {
         movieService.findResponseById(movieId);
 
         // Assert
-        verify(movieRepository).findResponseById(eq(movieId));
+        verify(movieRepository).findResponseById(movieId);
     }
 
     @Test
@@ -46,7 +46,7 @@ class DefaultMovieServiceTest {
         movieService.findResponseBySessionId(sessionId);
 
         // Assert
-        verify(movieRepository).findResponseBySessionId(eq(sessionId));
+        verify(movieRepository).findResponseBySessionId(sessionId);
     }
 
     @Test

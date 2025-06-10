@@ -146,16 +146,16 @@ class StripePaymentServiceTest {
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             try (MockedStatic<PaymentIntent> mockedPaymentIntent = mockStatic(PaymentIntent.class)) {
-                mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+                mockedSession.when(() -> Session.retrieve(sessionId))
                         .thenReturn(mockSession);
-                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(eq(mockSession.getPaymentIntent())))
+                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(mockSession.getPaymentIntent()))
                         .thenReturn(mockPaymentIntent);
 
                 // Act
                 PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
                 // Assert
-                mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+                mockedSession.verify(() -> Session.retrieve(sessionId));
 
                 assertNotNull(response);
                 assertEquals(mockSession.getId(), response.getCheckoutId());
@@ -182,16 +182,16 @@ class StripePaymentServiceTest {
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             try (MockedStatic<PaymentIntent> mockedPaymentIntent = mockStatic(PaymentIntent.class)) {
-                mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+                mockedSession.when(() -> Session.retrieve(sessionId))
                         .thenReturn(mockSession);
-                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(eq(mockSession.getPaymentIntent())))
+                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(mockSession.getPaymentIntent()))
                         .thenReturn(mockPaymentIntent);
 
                 // Act
                 PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
                 // Assert
-                mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+                mockedSession.verify(() -> Session.retrieve(sessionId));
 
                 assertNotNull(response);
                 assertEquals(mockSession.getId(), response.getCheckoutId());
@@ -213,14 +213,14 @@ class StripePaymentServiceTest {
         mockSession.setStatus("expired");
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
-            mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+            mockedSession.when(() -> Session.retrieve(sessionId))
                     .thenReturn(mockSession);
 
             // Act
             PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
             // Assert
-            mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+            mockedSession.verify(() -> Session.retrieve(sessionId));
 
             assertNotNull(response);
             assertEquals(mockSession.getId(), response.getCheckoutId());
@@ -238,14 +238,14 @@ class StripePaymentServiceTest {
         Session mockSession = getMockSession();
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
-            mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+            mockedSession.when(() -> Session.retrieve(sessionId))
                     .thenReturn(mockSession);
 
             // Act
             PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
             // Assert
-            mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+            mockedSession.verify(() -> Session.retrieve(sessionId));
 
             assertNotNull(response);
             assertNull(response.getPaymentIntentId());
@@ -268,14 +268,14 @@ class StripePaymentServiceTest {
         mockSession.setPaymentIntent("payment-intent-id");
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
-            mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+            mockedSession.when(() -> Session.retrieve(sessionId))
                     .thenReturn(mockSession);
 
             // Act
             PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
             // Assert
-            mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+            mockedSession.verify(() -> Session.retrieve(sessionId));
 
             assertNotNull(response);
             assertNull(response.getPaymentIntentId());
@@ -295,14 +295,14 @@ class StripePaymentServiceTest {
         mockSession.setStatus("unknown");
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
-            mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+            mockedSession.when(() -> Session.retrieve(sessionId))
                     .thenReturn(mockSession);
 
             // Act
             PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
             // Assert
-            mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+            mockedSession.verify(() -> Session.retrieve(sessionId));
 
             assertNotNull(response);
             assertNull(response.getPaymentIntentId());
@@ -327,16 +327,16 @@ class StripePaymentServiceTest {
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             try (MockedStatic<PaymentIntent> mockedPaymentIntent = mockStatic(PaymentIntent.class)) {
-                mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+                mockedSession.when(() -> Session.retrieve(sessionId))
                         .thenReturn(mockSession);
-                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(eq(mockSession.getPaymentIntent())))
+                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(mockSession.getPaymentIntent()))
                         .thenReturn(mockPaymentIntent);
 
                 // Act
                 PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
                 // Assert
-                mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+                mockedSession.verify(() -> Session.retrieve(sessionId));
 
                 assertNotNull(response);
                 assertEquals(mockSession.getId(), response.getCheckoutId());
@@ -362,16 +362,16 @@ class StripePaymentServiceTest {
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
             try (MockedStatic<PaymentIntent> mockedPaymentIntent = mockStatic(PaymentIntent.class)) {
-                mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+                mockedSession.when(() -> Session.retrieve(sessionId))
                         .thenReturn(mockSession);
-                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(eq(mockSession.getPaymentIntent())))
+                mockedPaymentIntent.when(() -> PaymentIntent.retrieve(mockSession.getPaymentIntent()))
                         .thenReturn(mockPaymentIntent);
 
                 // Act
                 PaymentInfoDto response = paymentService.getPaymentInfoBySessionId(sessionId);
 
                 // Assert
-                mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+                mockedSession.verify(() -> Session.retrieve(sessionId));
 
                 assertNotNull(response);
                 assertEquals(mockSession.getId(), response.getCheckoutId());
@@ -393,7 +393,7 @@ class StripePaymentServiceTest {
         mockSession.setStatus("complete");
 
         try (MockedStatic<Session> mockedSession = mockStatic(Session.class)) {
-            mockedSession.when(() -> Session.retrieve(eq(sessionId)))
+            mockedSession.when(() -> Session.retrieve(sessionId))
                     .thenReturn(mockSession);
 
             when(mockSession.expire()).thenReturn(mockSession);
@@ -402,7 +402,7 @@ class StripePaymentServiceTest {
             paymentService.expireCheckoutSession(sessionId);
 
             // Assert
-            mockedSession.verify(() -> Session.retrieve(eq(sessionId)));
+            mockedSession.verify(() -> Session.retrieve(sessionId));
             verify(mockSession).expire();
         }
     }

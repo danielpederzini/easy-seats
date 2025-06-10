@@ -63,13 +63,14 @@ class RedisSeatCacheServiceTest {
 
         verify(valueOps).set(
                 eq(seatKey),
-                eq(VALUE_PREFIX + userId),
-                anyLong(), any(TimeUnit.class)
+                eq(VALUE_PREFIX+ userId),
+                anyLong(),
+                any(TimeUnit.class)
         );
 
         verify(setOps).add(
-                eq(userLocksKey),
-                eq(seatKey)
+                userLocksKey,
+                seatKey
         );
     }
 
@@ -88,7 +89,7 @@ class RedisSeatCacheServiceTest {
 
         String seatKey = buildSeatKey(seatId, sessionId);
 
-        verify(template).hasKey(eq(seatKey));
+        verify(template).hasKey(seatKey);
         verify(valueOps, never()).set(anyString(), anyString(), anyLong(), any(TimeUnit.class));
         verify(setOps, never()).add(anyString(), anyString());
     }
@@ -131,12 +132,12 @@ class RedisSeatCacheServiceTest {
         String userLocksKey = buildUserLocksKey(userId);
 
         verify(template).delete(
-                eq(seatKey)
+                seatKey
         );
 
         verify(setOps).remove(
-                eq(userLocksKey),
-                eq(seatKey)
+                userLocksKey,
+                seatKey
         );
     }
 
@@ -174,7 +175,7 @@ class RedisSeatCacheServiceTest {
 
         String seatKey = buildSeatKey(seatId, sessionId);
 
-        verify(valueOps).get(eq(seatKey));
+        verify(valueOps).get(seatKey);
         verify(template, never()).delete(anyString());
         verify(setOps, never()).remove(anyString(), anyString());
     }
@@ -223,7 +224,7 @@ class RedisSeatCacheServiceTest {
 
         assertEquals(expected, result);
         verify(setOps).members(userLocksKey);
-        verify(setOps).remove(eq(userLocksKey), eq(keysToRemove.toArray()));
+        verify(setOps).remove(userLocksKey, keysToRemove.toArray());
         verify(template).delete(keysToRemove);
     }
 

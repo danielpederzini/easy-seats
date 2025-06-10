@@ -36,7 +36,7 @@ class DefaultSessionServiceTest {
         sessionService.findById(sessionId);
 
         // Assert
-        verify(sessionRepository).findById(eq(sessionId));
+        verify(sessionRepository).findById(sessionId);
     }
 
     @Test
@@ -48,7 +48,7 @@ class DefaultSessionServiceTest {
         sessionService.findResponseByBookingId(bookingId);
 
         // Assert
-        verify(sessionRepository).findResponseByBookingId(eq(bookingId));
+        verify(sessionRepository).findResponseByBookingId(bookingId);
     }
 
     @Test
@@ -60,7 +60,7 @@ class DefaultSessionServiceTest {
         sessionService.findIdByBookingId(bookingId);
 
         // Assert
-        verify(sessionRepository).findIdByBookingId(eq(bookingId));
+        verify(sessionRepository).findIdByBookingId(bookingId);
     }
 
     @Test
@@ -72,7 +72,7 @@ class DefaultSessionServiceTest {
         sessionService.findDetailedResponseById(sessionId);
 
         // Assert
-        verify(sessionRepository).findDetailedResponseById(eq(sessionId));
+        verify(sessionRepository).findDetailedResponseById(sessionId);
     }
 
     @Test
@@ -127,7 +127,7 @@ class DefaultSessionServiceTest {
 
         // Assert
         assertTrue(exists);
-        verify(sessionRepository).existsById(eq(sessionId));
+        verify(sessionRepository).existsById(sessionId);
     }
 
     @Test
@@ -141,7 +141,7 @@ class DefaultSessionServiceTest {
 
         // Assert
         assertFalse(exists);
-        verify(sessionRepository).existsById(eq(sessionId));
+        verify(sessionRepository).existsById(sessionId);
     }
 
     @Test

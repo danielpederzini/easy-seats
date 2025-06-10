@@ -96,7 +96,7 @@ class DefaultAuthServiceTest {
         String expected = "websocket-token";
 
         when(userRepository.findById(userId)).thenReturn(Optional.of(getMockUser()));
-        when(jwtUtils.generateWebsocketToken(any(User.class), eq(clientId))).thenReturn(expected);
+        when(jwtUtils.generateWebsocketToken(any(User.class), anyString())).thenReturn(expected);
 
         // Act
         String actual = authService.authForWebsocket(userId, clientId);

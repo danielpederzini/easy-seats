@@ -42,7 +42,7 @@ class DefaultSeatServiceTest {
         seatService.findByIds(seatIds, sessionId);
 
         // Assert
-        verify(seatRepository).findAllByIds(eq(seatIds), eq(sessionId));
+        verify(seatRepository).findAllByIds(seatIds, sessionId);
     }
 
     @Test
@@ -54,7 +54,7 @@ class DefaultSeatServiceTest {
         seatService.findResponsesBySessionId(sessionId);
 
         // Assert
-        verify(seatRepository).findResponsesBySessionId(eq(sessionId));
+        verify(seatRepository).findResponsesBySessionId(sessionId);
     }
 
     @Test
@@ -66,7 +66,7 @@ class DefaultSeatServiceTest {
         seatService.findIdsByBookingId(bookingId);
 
         // Assert
-        verify(seatRepository).findIdsByBookingId(eq(bookingId));
+        verify(seatRepository).findIdsByBookingId(bookingId);
     }
 
     @Test
@@ -85,8 +85,8 @@ class DefaultSeatServiceTest {
 
         // Assert
         assertEquals(Set.of(1L, 2L, 3L, 4L), takenSeatIds);
-        verify(bookedSeatRepository).findTakenSeatIdsBySessionId(eq(seatIds), eq(sessionId));
-        verify(seatCacheService).findTakenIdsBySessionId(eq(sessionId), eq(seatIds));
+        verify(bookedSeatRepository).findTakenSeatIdsBySessionId(seatIds, sessionId);
+        verify(seatCacheService).findTakenIdsBySessionId(sessionId, seatIds);
     }
 
     @Test
@@ -117,7 +117,7 @@ class DefaultSeatServiceTest {
             }
         });
 
-        verify(seatRepository).findIdsBySessionIds(eq(sessionIds));
+        verify(seatRepository).findIdsBySessionIds(sessionIds);
     }
 
     @Test
@@ -130,7 +130,7 @@ class DefaultSeatServiceTest {
         seatService.existsByIdAndSessionId(seatId, sessionId);
 
         // Assert
-        verify(seatRepository).existsByIdAndSessionId(eq(seatId), eq(sessionId));
+        verify(seatRepository).existsByIdAndSessionId(seatId, sessionId);
     }
 
     @Test
@@ -148,8 +148,8 @@ class DefaultSeatServiceTest {
 
         // Assert
         assertTrue(allAvailable);
-        verify(bookedSeatRepository).isAnyBooked(eq(sessionId), eq(seatIds));
-        verify(seatCacheService).isAnyCachedByAnotherUser(eq(seatIds), eq(sessionId), eq(userId));
+        verify(bookedSeatRepository).isAnyBooked(sessionId, seatIds);
+        verify(seatCacheService).isAnyCachedByAnotherUser(seatIds, sessionId, userId);
     }
 
     @Test
@@ -166,7 +166,7 @@ class DefaultSeatServiceTest {
 
         // Assert
         assertFalse(allAvailable);
-        verify(bookedSeatRepository).isAnyBooked(eq(sessionId), eq(seatIds));
+        verify(bookedSeatRepository).isAnyBooked(sessionId, seatIds);
     }
 
     @Test
@@ -184,8 +184,8 @@ class DefaultSeatServiceTest {
 
         // Assert
         assertFalse(allAvailable);
-        verify(bookedSeatRepository).isAnyBooked(eq(sessionId), eq(seatIds));
-        verify(seatCacheService).isAnyCachedByAnotherUser(eq(seatIds), eq(sessionId), eq(userId));
+        verify(bookedSeatRepository).isAnyBooked(sessionId, seatIds);
+        verify(seatCacheService).isAnyCachedByAnotherUser(seatIds, sessionId, userId);
     }
 
     @Test
@@ -201,8 +201,8 @@ class DefaultSeatServiceTest {
         seatService.reserveInCache(userId, sessionId, seatId);
 
         // Assert
-        verify(bookedSeatRepository).isAnyBooked(eq(sessionId), eq(Set.of(seatId)));
-        verify(seatCacheService).reserve(eq(userId), eq(sessionId), eq(seatId));
+        verify(bookedSeatRepository).isAnyBooked(sessionId, Set.of(seatId));
+        verify(seatCacheService).reserve(userId, sessionId, seatId);
     }
 
     @Test
@@ -218,7 +218,7 @@ class DefaultSeatServiceTest {
         assertThatThrownBy(() -> seatService.reserveInCache(userId, sessionId, seatId))
                 .isInstanceOf(ConflictException.class);
 
-        verify(bookedSeatRepository).isAnyBooked(eq(sessionId), eq(Set.of(seatId)));
+        verify(bookedSeatRepository).isAnyBooked(sessionId, Set.of(seatId));
     }
 
     @Test
@@ -232,7 +232,7 @@ class DefaultSeatServiceTest {
         seatService.releaseFromCache(userId, sessionId, seatId);
 
         // Assert
-        verify(seatCacheService).release(eq(userId), eq(sessionId), eq(seatId));
+        verify(seatCacheService).release(userId, sessionId, seatId);
     }
 
     @Test
@@ -245,7 +245,7 @@ class DefaultSeatServiceTest {
         seatService.clearUserCacheLockForSession(userId, sessionId);
 
         // Assert
-        verify(seatCacheService).clearUserLockForSession(eq(userId), eq(sessionId));
+        verify(seatCacheService).clearUserLockForSession(userId, sessionId);
     }
 
     private List<Object[]> getMockSeatIdsBySessionIds(Set<Long> sessionIds) {

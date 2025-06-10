@@ -52,9 +52,9 @@ class StripeWebhookServiceTest {
         webhookService.handleStripeEvent(event);
 
         // Assert
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
         verify(bookingStatusService).handleCheckoutCompleted(
-                eq(booking), eq(session.getId()), eq(session.getPaymentIntent())
+                booking, session.getId(), session.getPaymentIntent()
         );
     }
 
@@ -75,7 +75,7 @@ class StripeWebhookServiceTest {
         assertThatThrownBy(() -> webhookService.handleStripeEvent(event))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
         verify(bookingStatusService, never()).handleCheckoutCompleted(any(), any(), any());
     }
 
@@ -96,8 +96,8 @@ class StripeWebhookServiceTest {
         webhookService.handleStripeEvent(event);
 
         // Assert
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
-        verify(bookingStatusService).handlePaymentSuccess(eq(booking), eq(paymentIntent.getId()));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
+        verify(bookingStatusService).handlePaymentSuccess(booking, paymentIntent.getId());
     }
 
     @Test
@@ -116,7 +116,7 @@ class StripeWebhookServiceTest {
         assertThatThrownBy(() -> webhookService.handleStripeEvent(event))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
         verify(bookingStatusService, never()).handlePaymentSuccess(any(), any());
     }
 
@@ -137,8 +137,8 @@ class StripeWebhookServiceTest {
         webhookService.handleStripeEvent(event);
 
         // Assert
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
-        verify(bookingStatusService).handleCheckoutExpired(eq(booking), eq(session.getId()));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
+        verify(bookingStatusService).handleCheckoutExpired(booking, session.getId());
     }
 
     @Test
@@ -158,7 +158,7 @@ class StripeWebhookServiceTest {
         assertThatThrownBy(() -> webhookService.handleStripeEvent(event))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
         verify(bookingStatusService, never()).handleCheckoutExpired(any(), any());
     }
 
@@ -179,8 +179,8 @@ class StripeWebhookServiceTest {
         webhookService.handleStripeEvent(event);
 
         // Assert
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
-        verify(bookingStatusService).handlePaymentFailed(eq(booking), eq(paymentIntent.getId()));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
+        verify(bookingStatusService).handlePaymentFailed(booking, paymentIntent.getId());
     }
 
     @Test
@@ -199,7 +199,7 @@ class StripeWebhookServiceTest {
         assertThatThrownBy(() -> webhookService.handleStripeEvent(event))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
         verify(bookingStatusService, never()).handlePaymentFailed(any(), any());
     }
 
@@ -220,8 +220,8 @@ class StripeWebhookServiceTest {
         webhookService.handleStripeEvent(event);
 
         // Assert
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
-        verify(bookingStatusService).handlePaymentRefunded(eq(booking), eq(refund.getId()));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
+        verify(bookingStatusService).handlePaymentRefunded(booking, refund.getId());
     }
 
     @Test
@@ -240,7 +240,7 @@ class StripeWebhookServiceTest {
         assertThatThrownBy(() -> webhookService.handleStripeEvent(event))
                 .isInstanceOf(NotFoundException.class);
 
-        verify(bookingService).findByIdAndUserId(eq(1L), eq(1L));
+        verify(bookingService).findByIdAndUserId(1L, 1L);
         verify(bookingStatusService, never()).handlePaymentRefunded(any(), any());
     }
 

@@ -27,6 +27,6 @@ class DefaultBookedSeatServiceTest {
         bookedSeatService.findResponsesByBookingId(bookingId);
 
         // Assert
-        verify(bookedSeatRepository).findResponseByBookingId(eq(bookingId));
+        verify(bookedSeatRepository).findResponseByBookingId(bookingId);
     }
 }

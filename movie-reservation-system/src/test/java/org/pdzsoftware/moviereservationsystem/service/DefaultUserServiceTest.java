@@ -39,7 +39,7 @@ class DefaultUserServiceTest {
         userService.findById(userId);
 
         // Assert
-        verify(userRepository).findById(eq(userId));
+        verify(userRepository).findById(userId);
     }
 
     @Test
@@ -51,7 +51,7 @@ class DefaultUserServiceTest {
         userService.findIdByBookingId(bookingId);
 
         // Assert
-        verify(userRepository).findIdByBookingId(eq(bookingId));
+        verify(userRepository).findIdByBookingId(bookingId);
     }
 
     @Test
@@ -63,7 +63,7 @@ class DefaultUserServiceTest {
         userService.getProfileFromId(userId);
 
         // Assert
-        verify(userRepository).findProfileById(eq(userId));
+        verify(userRepository).findProfileById(userId);
     }
 
     @Test
@@ -77,7 +77,7 @@ class DefaultUserServiceTest {
 
         // Assert
         assertTrue(exists);
-        verify(userRepository).existsById(eq(userId));
+        verify(userRepository).existsById(userId);
     }
 
     @Test
@@ -91,7 +91,7 @@ class DefaultUserServiceTest {
 
         // Assert
         assertFalse(exists);
-        verify(userRepository).existsById(eq(userId));
+        verify(userRepository).existsById(userId);
     }
 
     @Test
@@ -111,7 +111,7 @@ class DefaultUserServiceTest {
         assertEquals(result.getPassword(), user.getPasswordHash());
         assertEquals(result.getAuthorities(), List.of(new SimpleGrantedAuthority("ROLE_" + user.getUserRole().name())));
 
-        verify(userRepository).findByEmail(eq(email));
+        verify(userRepository).findByEmail(email);
     }
 
     @Test
@@ -125,7 +125,7 @@ class DefaultUserServiceTest {
         assertThatThrownBy(() -> userService.loadUserByUsername(email))
                 .isInstanceOf(UsernameNotFoundException.class);
 
-        verify(userRepository).findByEmail(eq(email));
+        verify(userRepository).findByEmail(email);
     }
 
     private static User getMockUser() {

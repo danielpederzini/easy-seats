@@ -1,3 +1,4 @@
+[![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/danielpederzini/easy-seats/blob/main/README.md)
 
 ## Overview
 **Easy seats** is a easy to use movie ticket reservation system with the following features:

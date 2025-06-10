@@ -1,17 +1,17 @@
 [![pt-br](https://img.shields.io/badge/lang-pt--br-green.svg)](https://github.com/danielpederzini/easy-seats/blob/main/README.md)
 
 ## Overview
-**Easy seats** is a easy to use movie ticket reservation system with the following features:
+**Easy seats** is an easy to use movie ticket reservation system with the following features:
 - User authentication flow with secure cookie-based JWT session handling.
 - Movie listing with search filter and genre filter, with session existence check for smart ordering.
-- Session listing for the specified movie, with seat availability check to disable the button.
+- Session listing for the specified movie, with a seat availability check to disable the button.
 - Seat selection screen with real-time updates, concurrency handling, expiration logic and auto-clear when leaving the page.
 - Booking status system fully integrated with Stripe payment API (checkout, expiration, payments, refunds..).
 - User bookings listing, with smart ordering based on status, and buttons for related actions.
 - QRCode creation and validation for bookings to be verified when entering the session.
 
 ## Tokens and Authentication
-JWT tokens serve as the main security component of this application, all signed and verified with strong private and public keys using RSA algorithm. The tokens contain standard claims like issuer, audience, jti and custom claims such as userId and role. All authenticated operations require a token with the proper role and userId to prevent IDOR attacks.
+JWT tokens serve as the main security component of this application, all signed and verified with strong private and public keys using the RSA algorithm. The tokens contain standard claims like issuer, audience, jti and custom claims such as userId and role. All authenticated operations require a token with the proper role and userId to prevent IDOR attacks.
 
 There are currently 4 types of JWT in this application:
 - accessToken: very short expiration window
@@ -37,7 +37,7 @@ The seat selection screen displays a matrix of seats arranged by rows and number
 - Seat:{seatId}:{sessionId} -> UserID:{userId}
 - UserLocks:{userId} -> [keys]
 
-Whenever an user enters the seat selection screen, the front-end tries generating a websocketToken containing the userId and the clientId, and then passes it as a Bearer token to subscribe to the session topic. 
+Whenever a user enters the seat selection screen, the front-end tries generating a websocketToken containing the userId and the clientId, and then passes it as a Bearer token to subscribe to the session topic. 
 
 All seat status changes are broadcasted to the correct session topic (including bookings getting expired/cancelled), providing real-time feedback for all users without hurting performance. If the seat selection of an user expires, or if he leaves the screen by any means, a websocket disconnection event will be triggered and the selected seats will be released.
 

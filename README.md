@@ -11,9 +11,9 @@
 - Criação e validação de QRCode para que reservas sejam validadas na hora de entrar na sessão.
 
 ## Tokens e Autenticação
-Tokens JWT são o principal componente de segurança dessa aplicação, todos assinados e verificados com chaves públicas e privadas fortes usando o algoritmo RSA. Os tokens contém claims padrão como issuer, audience, jti e claims personalizadas como userId e role. Todas operações autenticadas requerem um token com a devida role e userId para prevenir ataques de IDOR.
+Tokens JWT são o principal componente de segurança desta aplicação, todos assinados e verificados com chaves públicas e privadas fortes usando o algoritmo RSA. Os tokens contém claims padrão como issuer, audience, jti e claims personalizadas como userId e role. Todas operações autenticadas requerem um token com a devida role e userId para prevenir ataques de IDOR.
 
-Atualmente, existem 4 tipos de JWT nessa aplicação:
+Atualmente, existem 4 tipos de JWT nesta aplicação:
 - accessToken: janela de expiração muito curta.
 - refreshToken: janela de expiração mais longa, invalidado após uso.
 - websocketToken: janela de expiração extremamente curta, usado apenas para se conectar ao websocket.
@@ -27,7 +27,7 @@ A listagem de filmes usa uma query de ordenação inteligente para mostrar prime
 https://github.com/user-attachments/assets/c0e00fca-5752-4dca-9836-d3b4ee149845
 
 ## Listagem de Sessões
-A listagem de sessões mostra as sessões para o filme em questão, sempre ordenadas em ordem de data de início crescente. É feita uma checagem para ver se há assentos disponíveis para cada sessão, checando tanto travas temporárias no cache quanto reservas persistidas no banco.
+A listagem de sessões mostra as sessões para o filme em questão, sempre em ordem de data de início crescente. É feita uma checagem para ver se há assentos disponíveis para cada sessão, checando tanto travas temporárias no cache quanto reservas persistidas no banco.
 
 https://github.com/user-attachments/assets/b5dd9622-aba0-4a74-8e99-fe0f7b99c8fb
 
@@ -44,7 +44,7 @@ Todas mudanças nos status dos assentos são transmitidas para o tópico da sess
 https://github.com/user-attachments/assets/b0c20155-203d-47aa-8b33-c1482f5467c4
 
 ## Reserva e Integração de Pagamentos
-Reservas são entidades que ligam o usuário à uma sessão de filme e os assentos selecionados, e os junta à informações de pagamento. Reservas usam uma variedade de status para acompanhar pagamentos, reembolsos, expirações e entre outros. Todas mudanças de status de pagamento são enviadas pela Stripe por meio de um webhook nessa aplicação, e processadas de acordo. Esses são os possíveis status de uma reserva e para quais outros eles conseguem transicionar:
+Reservas são entidades que ligam o usuário à uma sessão de filme e aos assentos selecionados, e os une à informações de pagamento. Reservas usam uma variedade de status para acompanhar pagamentos, reembolsos, expirações e entre outros. Todas mudanças de status de pagamento são enviadas pela Stripe por meio de um webhook nesta aplicação, e processadas de acordo. Esses são os possíveis status de uma reserva e para quais outros eles conseguem transicionar:
 
 - AWAITING_PAYMENT -> PAYMENT_CONFIRMED, PAYMENT_RETRY, EXPIRED
 - PAYMENT_RETRY -> PAYMENT_CONFIRMED, EXPIRED

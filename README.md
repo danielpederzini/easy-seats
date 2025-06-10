@@ -1,3 +1,5 @@
+[![en](https://img.shields.io/badge/lang-en-red.svg)](https://github.com/danielpederzini/easy-seats/blob/main/README.en.md)
+
 ## Visão Geral
 **Easy seats** é uma plataforma de reserva de ingressos para filmes, simples de usar, com as seguintes funcionalidades:
 - Fluxo de autneticação de usuário com gerenciamento de sessões seguro usando cookies com JWT.

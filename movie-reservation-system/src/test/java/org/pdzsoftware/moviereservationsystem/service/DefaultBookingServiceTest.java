@@ -25,11 +25,10 @@ import java.util.List;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.ArgumentMatchers.*;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.pdzsoftware.moviereservationsystem.enums.BookingStatus.*;
-import static org.pdzsoftware.moviereservationsystem.enums.BookingStatus.PAST;
 
 @ExtendWith(MockitoExtension.class)
 class DefaultBookingServiceTest {

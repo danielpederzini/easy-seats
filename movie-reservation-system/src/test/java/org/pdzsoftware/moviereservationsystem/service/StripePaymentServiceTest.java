@@ -31,7 +31,7 @@ import java.util.List;
 import java.util.Map;
 
 import static com.stripe.param.checkout.SessionCreateParams.*;
-import static com.stripe.param.checkout.SessionCreateParams.LineItem.*;
+import static com.stripe.param.checkout.SessionCreateParams.LineItem.PriceData;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;

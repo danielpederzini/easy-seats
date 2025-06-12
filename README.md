@@ -10,6 +10,12 @@
 - Listagem de reservas do usuário, com ordenação inteligente baseada em status, e botões para ações relacionadas.
 - Criação e validação de QRCode para que reservas sejam validadas na hora de entrar na sessão.
 
+## Stacks e Porque
+- PostgreSQL -> Muitos relacionamentos entre entidades, alguns Many to Many. NoSQL não faria sentido.
+- Redis -> Dados simples e temporários referentes a seleção de assentos, SQL seria desnecessário.
+- Java + Spring -> Framework robusto com features integradas de segurança e ORM.
+- Next.js -> Framework completo e simples de usar, todas as features do React e mais.
+
 ## Tokens e Autenticação
 Tokens JWT são o principal componente de segurança desta aplicação, todos assinados e verificados com chaves públicas e privadas fortes usando o algoritmo RSA. Os tokens contém claims padrão como issuer, audience, jti e claims personalizadas como userId e role. Todas operações autenticadas requerem um token com a devida role e userId para prevenir ataques de IDOR.
 

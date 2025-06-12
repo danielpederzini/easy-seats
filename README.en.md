@@ -10,6 +10,12 @@
 - User bookings listing, with smart ordering based on status, and buttons for related actions.
 - QRCode creation and validation for bookings to be verified when entering the session.
 
+## Stacks and Why
+- PostgreSQL -> Many relationships between entities, some being Many to Many. NoSQL would not make sense here.
+- Redis -> Simple and temporary data relating to the seat selection, SQL would be unnecessary.
+- Java + Spring -> Robust framework with integrated security and ORM features.
+- Next.js -> Complete and simple to use framework, all React's features and more.
+
 ## Tokens and Authentication
 JWT tokens serve as the main security component of this application, all signed and verified with strong private and public keys using the RSA algorithm. The tokens contain standard claims like issuer, audience, jti and custom claims such as userId and role. All authenticated operations require a token with the proper role and userId to prevent IDOR attacks.
 
